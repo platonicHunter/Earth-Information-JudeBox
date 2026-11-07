@@ -59,7 +59,7 @@ export function AudioControls({
         </div>
 
         {/* Dynamic Interactive Map Section */}
-        <div className="flex-1 w-full min-h-[200px] bg-black rounded-lg border border-gray-700 relative overflow-hidden shadow-inner">
+        <div className="flex-1 w-full min-h-50 bg-black rounded-lg border border-gray-700 relative overflow-hidden shadow-inner">
           {/* Leaflet Map */}
           <DynamicMap
             lat={parseFloat(lat) || 20.14}
@@ -69,7 +69,7 @@ export function AudioControls({
           {/* Audio Sync Visual Effect Overlay */}
           {isPlaying && (
             <div
-              className="absolute inset-0 bg-cyan-500/30 mix-blend-color transition-opacity duration-100 pointer-events-none z-[400]"
+              className="absolute inset-0 bg-cyan-500/30 mix-blend-color transition-opacity duration-100 pointer-events-none z-400"
               style={{
                 opacity:
                   data.length > 0 ? 0.2 + data[currentIndex]?.wind / 100 : 0,
@@ -78,7 +78,7 @@ export function AudioControls({
           )}
 
           {/* Floating Data Display */}
-          <div className="absolute bottom-2 left-2 text-[10px] sm:text-xs font-mono text-cyan-300 bg-black/80 px-2 py-1 rounded shadow border border-gray-800 z-[400]">
+          <div className="absolute bottom-2 left-2 text-[10px] sm:text-xs font-mono text-cyan-300 bg-black/80 px-2 py-1 rounded shadow border border-gray-800 z-400">
             Wind: {data[currentIndex]?.wind?.toFixed(1) || 0} m/s | Rain:{" "}
             {data[currentIndex]?.rain?.toFixed(1) || 0} mm
           </div>
@@ -144,7 +144,7 @@ export function AudioControls({
           <button
             onClick={togglePlay}
             disabled={data.length === 0}
-            className="flex-1 bg-gradient-to-r from-cyan-900 to-cyan-800 border border-cyan-500 text-cyan-100 hover:brightness-125 py-3 md:py-4 rounded-lg flex justify-center items-center text-sm md:text-base font-bold shadow-[0_0_15px_rgba(6,182,212,0.2)] transition disabled:opacity-50"
+            className="flex-1 bg-linear-to-r from-cyan-900 to-cyan-800 border border-cyan-500 text-cyan-100 hover:brightness-125 py-3 md:py-4 rounded-lg flex justify-center items-center text-sm md:text-base font-bold shadow-[0_0_15px_rgba(6,182,212,0.2)] transition disabled:opacity-50"
           >
             <Play className="w-4 h-4 md:w-5 md:h-5 mr-2 fill-current" /> PLAY
             AUDIO

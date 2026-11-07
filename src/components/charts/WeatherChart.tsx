@@ -55,7 +55,7 @@ export function WeatherChart({ data, currentIndex }: WeatherChartProps) {
   };
 
   return (
-    <Card className="bg-gray-900 border-gray-700 p-4 h-[300px] w-full flex flex-col">
+    <Card className="bg-gray-900 border-gray-700 p-4 h-75 w-full flex flex-col">
       <h3 className="text-cyan-500 text-xs tracking-widest font-semibold mb-4">
         WIND SPEED DATA (Chart.js)
       </h3>

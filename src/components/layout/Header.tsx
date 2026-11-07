@@ -82,12 +82,12 @@ export function Header({
             placeholder="Search city (e.g. Sittwe)"
             value={locationQuery}
             onChange={(e) => setLocationQuery(e.target.value)}
-            className="bg-transparent text-cyan-300 text-sm focus:outline-none placeholder-gray-600 flex-1 min-w-[180px]"
+            className="bg-transparent text-cyan-300 text-sm focus:outline-none placeholder-gray-600 flex-1 min-w-45"
           />
 
           {/* Dropdown Menu */}
           {showDropdown && searchResults.length > 0 && (
-            <div className="absolute top-full left-0 mt-2 w-full bg-[#1a2332] border border-gray-700 rounded-lg shadow-2xl overflow-hidden z-[100]">
+            <div className="absolute top-full left-0 mt-2 w-full bg-[#1a2332] border border-gray-700 rounded-lg shadow-2xl overflow-hidden z-100">
               {searchResults.map((loc, idx) => (
                 <div
                   key={idx}

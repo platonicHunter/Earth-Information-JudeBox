@@ -114,7 +114,7 @@ export function DataCharts({ data, currentIndex }: DataChartsProps) {
       </div>
 
       {/* 2. Real-time Chart */}
-      <div className="flex-1 min-h-[220px] relative w-full mb-4">
+      <div className="flex-1 min-h-55 relative w-full mb-4">
         {data.length > 0 ? (
           <Line data={chartData} options={options} />
         ) : (
