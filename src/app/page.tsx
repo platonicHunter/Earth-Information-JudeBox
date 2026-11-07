@@ -22,11 +22,19 @@ export default function Dashboard() {
   const [startDate, setStartDate] = useState("2023-05-10");
   const [endDate, setEndDate] = useState("2023-05-16");
 
-  // Audio Refs
+  // ==========================================
+  // PURE SYNTHESIS AUDIO REFS (Tone.js)
+  // ==========================================
   const isAudioReady = useRef(false);
-  const windOscillator = useRef<Tone.Oscillator | null>(null);
-  const rainNoise = useRef<Tone.Noise | null>(null);
+
+  // Wind Audio Nodes
+  const windNoise = useRef<Tone.Noise | null>(null);
+  const windFilter = useRef<Tone.Filter | null>(null);
   const windVolume = useRef<Tone.Volume | null>(null);
+
+  // Rain Audio Nodes
+  const rainNoise = useRef<Tone.Noise | null>(null);
+  const rainFilter = useRef<Tone.Filter | null>(null);
   const rainVolume = useRef<Tone.Volume | null>(null);
 
   const handleLoadData = async () => {
@@ -45,20 +53,32 @@ export default function Dashboard() {
   const setupAudio = async () => {
     if (!isAudioReady.current) {
       await Tone.start();
-      windVolume.current = new Tone.Volume(-20).toDestination();
-      windOscillator.current = new Tone.Oscillator(200, "sine")
-        .connect(windVolume.current)
+
+      // 1. Wind Generator
+      windVolume.current = new Tone.Volume(-Infinity).toDestination();
+      windFilter.current = new Tone.Filter(300, "lowpass").connect(
+        windVolume.current,
+      );
+      windNoise.current = new Tone.Noise("brown")
+        .connect(windFilter.current)
         .start();
+
+      // 2. Rain Generator
       rainVolume.current = new Tone.Volume(-Infinity).toDestination();
+      rainFilter.current = new Tone.Filter(800, "highpass").connect(
+        rainVolume.current,
+      );
       rainNoise.current = new Tone.Noise("pink")
-        .connect(rainVolume.current)
+        .connect(rainFilter.current)
         .start();
+
       isAudioReady.current = true;
     }
   };
 
   const handleTogglePlay = async () => {
     if (data.length === 0) return alert("Please load NASA data first.");
+
     if (!isPlaying) {
       await setupAudio();
       if (windVolume.current) windVolume.current.mute = isMuted;
@@ -81,23 +101,37 @@ export default function Dashboard() {
     return () => clearInterval(interval);
   }, [isPlaying, data.length]);
 
-  // Audio Sync Mapping
+  // ==========================================
+  // REAL-TIME DATA SONIFICATION MAPPING
+  // ==========================================
   useEffect(() => {
     if (isPlaying && data.length > 0 && isAudioReady.current) {
       const currentData = data[currentIndex];
+      const w = currentData.wind;
+      const r = currentData.rain;
 
-      // Wind = Pitch (100Hz to ~800Hz)
-      const windFreq = 100 + currentData.wind * 28;
-      windOscillator.current?.frequency.rampTo(windFreq, 0.1);
+      // --- Wind Mapping ---
+      if (windVolume.current && windFilter.current) {
+        if (w > 0) {
+          windVolume.current.volume.rampTo(-35 + w * 1.5, 0.3);
+          windFilter.current.frequency.rampTo(200 + w * 40, 0.3);
+        } else {
+          windVolume.current.volume.rampTo(-Infinity, 0.5);
+        }
+      }
 
-      // Rain = Volume (-40dB to ~0dB)
-      let rainVol = -40 + currentData.rain * 4;
-      if (currentData.rain === 0) rainVol = -Infinity;
-      rainVolume.current?.volume.rampTo(rainVol, 0.1);
+      // --- Rain Mapping ---
+      if (rainVolume.current && rainFilter.current) {
+        if (r > 0) {
+          rainVolume.current.volume.rampTo(-30 + r * 2, 0.3);
+        } else {
+          rainVolume.current.volume.rampTo(-Infinity, 0.5);
+        }
+      }
     }
   }, [currentIndex, isPlaying, data]);
 
-  // Mute Control
+  // Master Mute Control
   useEffect(() => {
     if (windVolume.current) windVolume.current.mute = isMuted || !isPlaying;
     if (rainVolume.current) rainVolume.current.mute = isMuted || !isPlaying;
@@ -120,13 +154,18 @@ export default function Dashboard() {
         loading={loading}
       />
 
-      {/* Grid ကို Chart ပေါ်နိုင်ရန် ဘယ်ဘက်ခြမ်းအတွက် 300px မှ 320px ထိ ချဲ့ပေးထားပါသည် */}
       <div className="w-full flex-1 grid grid-cols-1 lg:grid-cols-[300px_minmax(0,1fr)_320px] xl:grid-cols-[340px_minmax(0,1fr)_400px] gap-6">
         {/* Left Column: Real-time Charts & Legend */}
         <DataCharts data={data} currentIndex={currentIndex} />
 
-        {/* Center Column: Turntable */}
-        <Turntable isPlaying={isPlaying} lat={lat} lon={lon} />
+        {/* Center Column: Turntable with Live Weather Visuals */}
+        <Turntable
+          isPlaying={isPlaying}
+          lat={lat}
+          lon={lon}
+          wind={data[currentIndex]?.wind || 0}
+          rain={data[currentIndex]?.rain || 0}
+        />
 
         {/* Right Column: Audio Controls & Visual Map */}
         <AudioControls

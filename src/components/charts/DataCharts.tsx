@@ -125,16 +125,25 @@ export function DataCharts({ data, currentIndex }: DataChartsProps) {
       </div>
 
       {/* 3. Sonification Mapping Legend */}
+      {/* 3. Sonification Mapping Legend */}
       <div className="bg-[#0a0f18] p-3 rounded-lg border border-gray-800">
         <h4 className="text-[10px] text-gray-400 tracking-wider mb-2 uppercase text-center font-semibold">
-          Sonification Rules
+          Audio Mapping Rules
         </h4>
-        <div className="flex justify-between items-center text-xs px-2">
-          <div className="flex items-center text-cyan-400">
-            <Wind className="w-3.5 h-3.5 mr-1.5" /> Wind = Pitch
+        <div className="grid grid-cols-2 gap-2 text-[10px] text-gray-300">
+          <div className="flex items-center">
+            <Wind className="w-3 h-3 mr-1 text-green-400" /> Clear: Birds
           </div>
-          <div className="flex items-center text-blue-400">
-            <Droplets className="w-3.5 h-3.5 mr-1.5" /> Rain = Volume
+          <div className="flex items-center">
+            <Droplets className="w-3 h-3 mr-1 text-cyan-400" /> Rain &lt; 5:
+            Light Rain
+          </div>
+          <div className="flex items-center">
+            <Droplets className="w-3 h-3 mr-1 text-blue-500" /> Rain &gt; 5:
+            Heavy Rain
+          </div>
+          <div className="flex items-center">
+            <Activity className="w-3 h-3 mr-1 text-yellow-500" /> Storm: Thunder
           </div>
         </div>
       </div>
