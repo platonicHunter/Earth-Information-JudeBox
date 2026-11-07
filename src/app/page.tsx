@@ -96,7 +96,7 @@ export default function Dashboard() {
     if (isPlaying && data.length > 0) {
       interval = setInterval(() => {
         setCurrentIndex((prev) => (prev >= data.length - 1 ? 0 : prev + 1));
-      }, 500);
+      }, 1500);
     }
     return () => clearInterval(interval);
   }, [isPlaying, data.length]);
@@ -165,6 +165,7 @@ export default function Dashboard() {
           lon={lon}
           wind={data[currentIndex]?.wind || 0}
           rain={data[currentIndex]?.rain || 0}
+          currentTime={data[currentIndex]?.time || "N/A"}
         />
 
         {/* Right Column: Audio Controls & Visual Map */}
