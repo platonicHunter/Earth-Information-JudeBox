@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { WeatherData } from "@/services/nasaApi";
 
-// Map.tsx ကို Client-side တွင်သာ Render လုပ်ရန် Dynamic Import သုံးခြင်း
+// Lazy Loading
 const DynamicMap = dynamic(() => import("./Map"), {
   ssr: false,
   loading: () => (
@@ -31,7 +31,7 @@ interface AudioControlsProps {
   togglePlay: () => void;
   isMuted: boolean;
   toggleMute: () => void;
-  lat: string; // ထပ်တိုးထားသော Props များ
+  lat: string;
   lon: string;
 }
 

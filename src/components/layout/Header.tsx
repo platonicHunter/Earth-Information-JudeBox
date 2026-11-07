@@ -49,16 +49,16 @@ export function Header({
         setSearchResults([]);
         setShowDropdown(false);
       }
-    }, 600); // User စာရိုက်ရပ်ပြီး ၀.၆ စက္ကန့်အကြာတွင် API ခေါ်မည်
+    }, 600);
 
     return () => clearTimeout(delayDebounceFn);
   }, [locationQuery]);
 
-  // နေရာတစ်ခုကို ရွေးချယ်လိုက်သည့်အခါ
+  //
   const handleSelectLocation = (loc: LocationResult) => {
     setLat(loc.lat);
     setLon(loc.lon);
-    setLocationQuery(loc.display_name.split(",")[0]); // မြို့နာမည်ကိုသာ Input တွင် ပြန်ပြမည်
+    setLocationQuery(loc.display_name.split(",")[0]);
     setShowDropdown(false);
   };
 

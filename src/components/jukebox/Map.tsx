@@ -31,7 +31,7 @@ export default function Map({ lat, lon }: { lat: number; lon: number }) {
       style={{ height: "100%", width: "100%", background: "#0a0f18" }}
       zoomControl={false}
     >
-      {/* API Key လုံးဝမလိုသော Esri Dark Map သို့ ပြောင်းလဲထားပါသည် */}
+      {/* <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" /> */}
       <TileLayer
         url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
         attribution="Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ"

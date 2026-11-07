@@ -23,7 +23,7 @@ export function Turntable({
   wind = 0,
   rain = 0,
 }: TurntableProps) {
-  // ရာသီဥတု အခြေအနေကို အသေးစိတ် ခွဲခြားခြင်း
+  // Separate function to determine weather state based on wind and rain values
   const getWeatherState = () => {
     if (rain > 10 || (wind > 15 && rain > 5)) {
       return {
@@ -115,7 +115,7 @@ export function Turntable({
         <div className="absolute inset-0 bg-purple-500/20 thunder-flash pointer-events-none z-0"></div>
       )}
 
-      {/* 2. Rain Animation Effect (မိုးစက်ကျသည့် ပုံစံများ) */}
+      {/* 2. Rain Animation Effect  */}
       {(weather.type === "heavy-rain" ||
         weather.type === "light-rain" ||
         weather.type === "thunder") && (
@@ -193,10 +193,10 @@ export function Turntable({
           {/* Center Label */}
           <div className="w-[35%] h-[35%] rounded-full shadow-2xl z-20 flex flex-col justify-center items-center bg-linear-to-br from-cyan-900 to-blue-950 border-4 border-[#222] relative overflow-hidden">
             <span className="text-[7px] text-cyan-400 font-bold tracking-widest">
-              NASA POWER
+              APOLLO 3 TEAM
             </span>
             <h4 className="text-[9px] text-white font-black tracking-wider">
-              EARTH
+              EARTH JUKEBOX
             </h4>
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-[#0a0a0a] rounded-full border border-gray-700"></div>
           </div>

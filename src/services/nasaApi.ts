@@ -6,7 +6,6 @@ import axios from "axios";
 // 1. TypeScript Interfaces (Types)
 // ==========================================
 
-// အခြား Component များမှ Import ခေါ်သုံးနိုင်ရန် `export` ထည့်ထားပါသည်။
 export interface WeatherData {
   time: string;
   wind: number;
@@ -19,10 +18,7 @@ export interface LocationResult {
   lon: string;
 }
 
-// ==========================================
-// 2. OpenStreetMap Geocoding API
-// ==========================================
-// မြို့အမည်ရိုက်ထည့်လိုက်လျှင် Lat/Lon နှင့်တကွ ရွေးချယ်စရာ ၅ ခု ပြန်ပေးပါမည်။
+// Street Map
 
 export const geocodeLocation = async (
   query: string,
@@ -52,11 +48,6 @@ export const geocodeLocation = async (
   }
 };
 
-// ==========================================
-// 3. NASA POWER API
-// ==========================================
-// Lat, Lon နှင့် ရက်စွဲကို အခြေခံ၍ လေတိုက်နှုန်းနှင့် မိုးရေချိန်ကို ပြန်ပေးပါမည်။
-
 export const fetchNasaWeather = async (
   lat: string,
   lon: string,
@@ -64,7 +55,7 @@ export const fetchNasaWeather = async (
   endDate: string,
 ): Promise<WeatherData[]> => {
   try {
-    // NASA API သည် ရက်စွဲကို YYYY-MM-DD အစား YYYYMMDD format ဖြင့်သာ လက်ခံပါသည်။
+    //
     const formatStart = startDate.replace(/-/g, "");
     const formatEnd = endDate.replace(/-/g, "");
 
@@ -72,7 +63,7 @@ export const fetchNasaWeather = async (
       "https://power.larc.nasa.gov/api/temporal/hourly/point",
       {
         params: {
-          parameters: "WS10M,PRECTOTCORR", // WS10M = Wind, PRECTOTCORR = Rain
+          parameters: "WS10M,PRECTOTCORR",
           community: "RE",
           longitude: parseFloat(lon),
           latitude: parseFloat(lat),
@@ -88,7 +79,6 @@ export const fetchNasaWeather = async (
     const rainData = Object.values(paramData.PRECTOTCORR) as number[];
     const timestamps = Object.keys(paramData.WS10M);
 
-    // UI တွင် အလွယ်တကူ Map လှည့်၍ သုံးနိုင်ရန် Array of Objects အဖြစ် ပြောင်းပေးခြင်း
     return timestamps.map((time, index) => ({
       time,
       wind: windData[index],
@@ -96,6 +86,6 @@ export const fetchNasaWeather = async (
     }));
   } catch (error) {
     console.error("NASA API Error:", error);
-    throw error; // UI တွင် Alert ပြနိုင်ရန် Error ကို throw လုပ်ပေးပါသည်။
+    throw error;
   }
 };
